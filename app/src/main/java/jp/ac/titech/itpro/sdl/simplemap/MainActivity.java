@@ -26,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity implements
         GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, LocationListener {
@@ -67,8 +68,10 @@ public class MainActivity extends AppCompatActivity implements
             @Override
             public void onClick(View v) {
                 if(lastLocation != null){
+                    LatLng llLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
                     googleMap.animateCamera(CameraUpdateFactory
-                        .newLatLng(new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude())));
+                        .newLatLng(llLatLng));
+                    googleMap.addMarker(new MarkerOptions().position(llLatLng));
                     Log.d(TAG, "updateButton::OnClickListener: update location to " + lastLocation);
                 }
             }
