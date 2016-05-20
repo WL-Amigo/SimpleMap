@@ -26,6 +26,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity implements
@@ -50,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements
     // location update button
     private Button updateButton;
     private Location lastLocation;
+    private Marker lastMarker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,12 +73,16 @@ public class MainActivity extends AppCompatActivity implements
                     LatLng llLatLng = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
                     googleMap.animateCamera(CameraUpdateFactory
                         .newLatLng(llLatLng));
-                    googleMap.addMarker(new MarkerOptions().position(llLatLng));
+                    if(lastMarker != null){
+                        lastMarker.remove();
+                    }
+                    lastMarker = googleMap.addMarker(new MarkerOptions().position(llLatLng));
                     Log.d(TAG, "updateButton::OnClickListener: update location to " + lastLocation);
                 }
             }
         });
         lastLocation = null;
+        lastMarker = null;
 
         googleApiClient = new GoogleApiClient.Builder(this)
                 .addConnectionCallbacks(this)
